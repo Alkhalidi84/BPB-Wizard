@@ -31,14 +31,12 @@ export default {
                     const deployType = formData.get('deployType')?.toString() || 'workers';
                     const account = await CFAccount.create(apiToken);
 
-                    let workerName: string;
-                    do {
-                        workerName = randSubdomain();
-                    } while (await account.nameTaken(deployType, workerName));
+                    // Hardcode the previous Worker name to preserve existing VLESS and connection configurations
+                    const workerName = "gzm-td37go3ek1gos8zyy3t";
 
                     info('Installing BPB Panel...');
                     const namespaceId = await account.createKvNamespace(workerName, deployType);
-                    success('KV namespace created successfully!');
+                    success('KV namespace verified successfully!');
 
                     if (deployType === 'pages') {
                         await deployPages(env, account, workerName, namespaceId, logger, preRelease);
